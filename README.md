@@ -116,8 +116,8 @@ After the base Arch Linux system is installed, alis can install packages with pa
 
 ```
 #                                  # After system installation start a user session
-# curl -sL https://raw.githubusercontent.com/picodotdev/alis/master/download.sh | bash     # Download alis scripts
-# # curl -sL https://bit.ly/2F3CATp | bash                                                 # Alternative download URL with URL shortener
+# curl -sL https://raw.githubusercontent.com/mofe23/alis/master/download.sh | bash     # Download alis scripts
+# curl -sL https://bit.ly/3tQkvkL | bash                                               # Alternative download URL with URL shortener
 # ./alis-packages-asciinema.sh     # (Optional) Start asciinema video recording
 # vim alis-packages.conf           # Edit configuration and change variables values with your preferences (packages to install)
 # ./alis-packages.sh               # Start packages installation
@@ -235,3 +235,20 @@ https://www.archlinux.org/download/
 * https://wiki.archlinux.org/index.php/I3
 * http://tldp.org/LDP/Bash-Beginners-Guide/html/
 * http://tldp.org/LDP/abs/html/
+
+
+# Notes
+
+Creates a `getalis` script (does kinda the same as download.sh, but without github)
+```shell
+cat << EOF > getalis
+$(export IP=$(ipconfig getifaddr en0) && export PORT="8000" && echo '#!/bin/bash\n' && gfind -maxdepth 1 -type f -executable -printf "curl -O http://$IP:$PORT/%f\n" && gfind . -maxdepth 1 -name '*.conf' -type f -printf "curl -O http://$IP:$PORT/%f\n" && echo 'chmod +x *.sh\n')
+EOF
+```
+
+Then run a local webserver `python -c 'http.server'`
+
+On the machine to be set-up run
+``
+curl http://$IP:8000/getalis | bash && ./alis.sh
+``

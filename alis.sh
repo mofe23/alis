@@ -80,6 +80,9 @@ LIGHT_BLUE='\033[1;34m'
 NC='\033[0m'
 
 function configuration_install() {
+    if [ -f .env ]; then
+        source .env
+    fi
     source "$CONF_FILE"
 }
 
@@ -1209,7 +1212,7 @@ function bootloader_grub() {
     arch-chroot /mnt sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="'"$CMDLINE_LINUX"'"/' /etc/default/grub
     echo "" >> /mnt/etc/default/grub
     echo "# alis" >> /mnt/etc/default/grub
-    echo "GRUB_DISABLE_SUBMENU=y" >> /mnt/etc/default/grub
+    # echo "GRUB_DISABLE_SUBMENU=y" >> /mnt/etc/default/grub
 
     if [ "$BIOS_TYPE" == "uefi" ]; then
         pacman_install "efibootmgr"
@@ -1545,6 +1548,9 @@ function desktop_environment() {
         "i3-gaps" )
             desktop_environment_i3_gaps
             ;;
+        "regolith" )
+            desktop_environment_regolith
+            ;;
     esac
 
     arch-chroot /mnt systemctl set-default graphical.target
@@ -1588,6 +1594,10 @@ function desktop_environment_i3_wm() {
 function desktop_environment_i3_gaps() {
     pacman_install "i3-gaps i3blocks i3lock i3status dmenu rxvt-unicode lightdm lightdm-gtk-greeter xorg-server"
     arch-chroot /mnt systemctl enable lightdm.service
+}
+
+function desktop_environment_regolth() {
+  curl -O https://github.com/gardotd426/regolith-de/archive/refs/heads/master.zip
 }
 
 function packages() {

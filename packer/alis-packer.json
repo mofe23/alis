@@ -13,13 +13,14 @@
         "headless": false,
         "http_directory": ".",
         "vboxmanage": [
-          ["modifyvm", "{{.Name}}", "--memory", "2048"],
-          ["modifyvm", "{{.Name}}", "--vram", "128"],
+          ["modifyvm", "{{.Name}}", "--memory", "4096"],
+          ["modifyvm", "{{.Name}}", "--vram", "64"],
           ["modifyvm", "{{.Name}}", "--cpus", "2"],
-          ["modifyvm", "{{.Name}}", "--firmware", "efi"]
+          ["modifyvm", "{{.Name}}", "--firmware", "efi"],
+          ["modifyvm", "{{.Name}}", "--graphicscontroller", "vmsvga"]
         ],
         "disk_size": "{{user `disk_size`}}",
-        "hard_drive_interface": "sata",
+        "hard_drive_interface": "pcie",
         "iso_url": "{{user `iso`}}",
         "iso_checksum": "sha1:eb3b4995be6db3109e15c70a2ca1a6a9f76daf41",
         "ssh_username": "vagrant",
